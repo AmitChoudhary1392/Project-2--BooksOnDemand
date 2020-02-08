@@ -13,21 +13,54 @@
             <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
                 <div class = "container">
                     
-                        <a class="navbar-brand" href="index.html">Book Look</a>
+                        <a class="navbar-brand" href="index.html">Share your book</a>
                  
 
                 
                     </div>
                 </div>
             </nav>
-    
-            <form method="POST" action="/send" role="form", name="bookinfo">
+			
+			<form method="GET" action="/send" role="form", name="bookinfo">
                 <div class="form-group">
+				
                     <label for="inputName">Book Title</label>
-                    <input type="text" class="form-control" id="inputName" name="bookName" placeholder="Name">
+                    <input type="text" class="form-control" id="inputTitle" name="bookName" placeholder="Bookname">
                 </div>
-                <input type="submit" value="submit" class="btn btn-default" href="Createnew.html">>
-            </form>
+						   
+			   <input type="submit" value="search" class="btn btn-default">
+			</form>
+    
+	
+		
+		<form method="POST" action="/send" role="form", name="bookForm">
+                <div class="form-group">
+				
+                    <label for="inputName">Book Title</label>
+                    <input type="text" class="form-control" id="inputTitle" name="bookName" placeholder="Bookname">
+                </div>
+				<div class="form-group">
+					<label for="inputEmail">Email</label>
+					<input type="text" class="form-control" id="inputEmail" name="ownerEmail" placeholder="Email">
+				</div>
+				<div class="form-group">
+					<label for="inputRating">Rating</label>
+					<input type="text" class="form-control" id="inputRating" name="ownerRating" placeholder="Rating">
+				</div>
+				<div class="form-group">
+					<label for="inputReview">Review</label>
+					<input type="text" class="form-control" id="inputReview" name="ownerReview" placeholder="Review">
+				</div>
+				<div class="form-group">
+					<label for="inputPcode">PostalCode</label>
+					<input type="text" class="form-control" id="inputPcode" name="ownerPcode" placeholder="PostalCode">
+				</div>
+				<div class="form-group">
+					<label for="inputCdetail">Contact Detail</label>
+					<input type="text" class="form-control" id="inputCdetail" name="ownerCdetail" placeholder="ContactDetail">
+				</div>
+		    <input type="submit" value="submit" class="btn btn-default">
+		</form>
         
 
 
