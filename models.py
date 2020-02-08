@@ -1,7 +1,7 @@
-from .app import db
+from app import db
 
 
-class Books(db.Model):
+class Book(db.Model):
     __tablename__ = 'Book'
 
     id_book = db.Column(db.String(20), primary_key=True) 
@@ -26,6 +26,8 @@ class Owner(db.Model):
     rating = db.Column(db.Integer)
     review = db.Column(db.String(1000))
     postal_code = db.Column(db.String(6))
+    lat = db.Column(db.Float)
+    lon = db.Column(db.Float)
     contact_details = db.Column(db.String(1000))
     available = db.Column(db.Integer)
 
