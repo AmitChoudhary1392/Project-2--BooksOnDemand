@@ -1,1 +1,20 @@
-CSS file
+
+
+
+  .topspace {
+    padding-top: 30px;
+  }
+
+  .spacing {
+    padding-top: 160px;
+  }
+
+  .navigate {
+    font-size: 30px;    
+  }
+
+  .midline {
+    padding-left: 200px;
+    padding-right: 600px;
+
+  }

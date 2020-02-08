@@ -6,16 +6,20 @@ from flask import (
     request,
     redirect)
 
+import requests
+
 app = Flask(__name__)
 
+bookTitle = ""
+
 from flask_sqlalchemy import SQLAlchemy
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '') or "sqlite:///db.sqlite"
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgres://xuogxhiwjayrke:c8a1bc208e9b818bfa20e9e23ee06c5fe8857d6becc336912a42184706764b3b@ec2-184-72-236-3.compute-1.amazonaws.com:5432/d2ma2m4n786kvk"
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '')
 
 db = SQLAlchemy(app)
 
-from .models import Books
-from .models import Owner
+from models import *
 
 
 # create route that renders index.html template
@@ -23,71 +27,58 @@ from .models import Owner
 def home():
     return render_template("index.html")
 
+# Query the database and send the jsonified results
+@app.route("/getBook", methods=["GET", "POST"])
+def getBook():
+    if request.method == "POST":
+        global bookTitle 
+        bookTitle = request.form["bookName"]
+        return redirect("/showBooks") 
+
 
 # Query the database and send the jsonified results
-@app.route("/send", methods=["GET", "POST"])
-def send():
-    if request.method == "POST":
-        #assigning variables entered from the form
-        #[""] is the name of the input element in the form html
+@app.route("/showBooks")
+def showBooks():
+    global bookTitle
+    data = requests.get(f"/api/findbook/{bookTitle}")
+    return render_template('ShareForm.html',data=data)
+
+
+@app.route("/api/findbook/<searchTerm>")
+def findbook(searchTerm):
+
+    # Google developer API key
+    from config import api_key
+
+    params={'maxResults':5}
+
+    url= f'https://www.googleapis.com/books/v1/volumes?q={searchTerm}&key={api_key}'
+    response = requests.get(url, params).json()
+
+    results=response['items']
+
+    books=[]
+
+    for item in results:
+        try:
+            book={
+                'id_book': item['id'],
+                'title':item['volumeInfo']['title'] if 'title' in item['volumeInfo'].keys() else " ",
+                'description': item['volumeInfo']['description'] if 'description' in item['volumeInfo'].keys() else " ",
+                'isbn':item['volumeInfo']['industryIdentifiers'][0]['identifier'] if 'industryIdentifiers' in item['volumeInfo'].keys() else " ",
+                'authors':item['volumeInfo']['authors'] if 'authors' in item['volumeInfo'].keys() else " ",
+                'language':item['volumeInfo']['language'] if 'language' in item['volumeInfo'].keys() else " ",
+                'image_url':item['volumeInfo']['imageLinks']['smallThumbnail'] if 'imageLinks' in item['volumeInfo'].keys() else " ",
+                'publisher': item['volumeInfo']['publisher'] if 'publisher' in item['volumeInfo'].keys() else " ",        
+                'published_date':item['volumeInfo']['publishedDate'] if 'published_date' in item['volumeInfo'].keys() else " "
+            }
+            
+        except:
+            book = {'id_book': 'not found'}
         
-        idBook = request.form["id"]
-        ownerEmail = request.form["bookName"]
-        rating = request.form["bookName"]
-        review = request.form["bookName"]
-        postalCode = request.form["bookAuthor"]
-        contactDetail = request.form["book"]
-        available = request.form["book"]
-        
-        #assign class variables to Owner object     
-        bookShare = Owner(id_book=idBook, owner_email=ownerEmail, rating=rating, review=review, 
-                postal_code=postalCode, contact_details=contactDetail, available=available)
-        
-        #add the book record to database
-        db.session.add(bookShare)
-        
-        #commit
-        db.session.commit()
-        
-        #return back to index page 'landing page'
-        return redirect("/", code=302)
+        books.append(book)
 
-    #return render template on the form page
-    return render_template("form.html")
-
-
-@app.route("/api/findbook")
-def pals():
-    #again we will need the db name and the column names to assign it to results
-    results = db.session.query(Pet.name, Pet.lat, Pet.lon).all()
-    
-    
-
-    
-    bookName = [result[0] for result in results]
-    postalCode = [results[1] for result in results]
-    secondarrayobj = [result[1] for result in results]
-    thirdarrayobj = [result[2] for result in results]
-    lat 
-    lng
-
-
-    book_data = [{
-        "type": "Feature",
-        "properties": {
-            "name": bookName,
-            "popupContent": f'{bookName} is here'     
-        },
-        "geometry":{
-            "type": "Point",
-            "cooridnates": [lat,lng]
-           } 
-        }]
-        
-          
-
-    return jsonify(book_data)
-
+    return jsonify(books)
 
 if __name__ == "__main__":
     app.run()
