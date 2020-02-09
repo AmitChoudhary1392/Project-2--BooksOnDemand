@@ -26,19 +26,29 @@ from models import *
 @app.route("/")
 def home():
     return render_template("index.html")
+@app.route("/Shareform", methods=["GET", "POST"])
+def Shareform():
+    
+    return render_template("Shareform.html")
+
+@app.route("/GetForm", methods=["GET", "POST"])
+def GetForm():
+    
+    return render_template("GetForm.html")
 
 # Query the database and send the jsonified results
 @app.route("/getBook", methods=["GET", "POST"])
 def getBook():
     if request.method == "POST":
         global bookTitle 
-        bookTitle = request.form["bookName"]
+        bookTitle = request.form("bookName")
         return redirect("/showBooks") 
 
 
 # Query the database and send the jsonified results
 @app.route("/showBooks")
 def showBooks():
+   
     global bookTitle
     data = requests.get(f"/api/findbook/{bookTitle}")
     return render_template('ShareForm.html',data=data)
@@ -50,7 +60,7 @@ def findbook(searchTerm):
     # Google developer API key
     from config import api_key
 
-    params={'maxResults':5}
+    params={'maxResults':1}
 
     url= f'https://www.googleapis.com/books/v1/volumes?q={searchTerm}&key={api_key}'
     response = requests.get(url, params).json()
