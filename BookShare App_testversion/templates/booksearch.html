@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Book Search</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+                integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+                crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <body>
+        <style>
+            body {
+              background-image: url('../assets/Images/Share-a-Book-1.png');
+              background-repeat: no-repeat;
+              background-attachment: fixed;
+              background-size:cover;
+            }
+            </style>
+         <!-----Navigation Bar -->
+         <nav class="navbar navbar-expand-lg navbar-light " style="padding:0px;">
+            <div class="container-fluid">
+        
+                <a class="navbar-brand" href="/" style="font-size:xx-large; margin-left: 80px;"><strong>BookLook</strong></a>
+             </div> <!--container fluid-->
+        </nav>
+
+        <div class="container">
+            <div class="jumbotron" style="text-align: center">
+               
+                <h1>Find Books</h1>
+                <p>Find your Next Read!</p>
+            </div>
+            <div class="row">
+                <div class="col-md-offset-2 col-md-8">
+                    <form method="POST" action="/getBook" role="form", name="bookInfo">
+                        <div class="form-group">
+                            <label for="inputTitle">Book Title</label>
+                            <input type="text" class="form-control" id="inputTitle" name="title" placeholder="Name">
+                        </div>
+                        <button type="button" class="btn btn-light">
+                        <input type="submit" value="Submit" class="btn btn-default">
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+
+</html>
