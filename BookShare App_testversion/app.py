@@ -46,7 +46,7 @@ def getBook():
 
     from config import api_key
 
-    params={'maxResults':2}
+    params={'maxResults':5}
 
     url= f'https://www.googleapis.com/books/v1/volumes?q={bookTitle}&key={api_key}'
     response = requests.get(url, params).json()
@@ -55,17 +55,15 @@ def getBook():
     results=response['items']
     for item in results:
         try:
-            book={
-                'image_url':item['volumeInfo']['imageLinks']['smallThumbnail'] if 'imageLinks' in item['volumeInfo'].keys() else " ",
-                'id_book': item['id'],
-                'title':item['volumeInfo']['title'] if 'title' in item['volumeInfo'].keys() else " ",
-                'category/genre':item['volumeInfo']['categories'] if 'categories' in item['volumeInfo'].keys() else " ",
-                'authors':item['volumeInfo']['authors'] if 'authors' in item['volumeInfo'].keys() else " ",
-                'description': item['volumeInfo']['description'] if 'description' in item['volumeInfo'].keys() else " ",
-                'isbn':item['volumeInfo']['industryIdentifiers'][0]['identifier'] if 'industryIdentifiers' in item['volumeInfo'].keys() else " ",
-                'language':item['volumeInfo']['language'] if 'language' in item['volumeInfo'].keys() else " ",
-                'published_date':item['volumeInfo']['publishedDate'] if 'published_date' in item['volumeInfo'].keys() else " ",
-                'publisher': item['volumeInfo']['publisher'] if 'publisher' in item['volumeInfo'].keys() else " "     
+            book={'id_book': item['id'],
+              'title':item['volumeInfo']['title'] if 'title' in item['volumeInfo'].keys() else " ",
+              'description': item['volumeInfo']['description'] if 'description' in item['volumeInfo'].keys() else " ",
+              'isbn':item['volumeInfo']['industryIdentifiers'][0]['identifier'] if 'industryIdentifiers' in item['volumeInfo'].keys() else " ",
+              'author':item['volumeInfo']['authors'] if 'authors' in item['volumeInfo'].keys() else " ",
+              'language':item['volumeInfo']['language'] if 'language' in item['volumeInfo'].keys() else " ",
+              'image_url':item['volumeInfo']['imageLinks']['smallThumbnail'] if 'imageLinks' in item['volumeInfo'].keys() else " ",
+              'publisher': item['volumeInfo']['publisher'] if 'publisher' in item['volumeInfo'].keys() else " ",        
+              'published_date':item['volumeInfo']['publishedDate'] if 'published_date' in item['volumeInfo'].keys() else " "
             }
             
         except:
