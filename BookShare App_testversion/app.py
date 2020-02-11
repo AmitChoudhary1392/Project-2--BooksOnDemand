@@ -159,34 +159,64 @@ def send():
     #return render_template("form.html")
 
 
-@app.route("/api/ownerdetails/<location>")
-def owner(location):
+#################################################
+# bookshare return data from Database
+#################################################
 
-    
+@app.route("/api/listSharedBooks")
+def listSharedBooks():
+    books = db.session.query(Book.id_book, Book.title, Book.image_url).all()
 
-    """ results = db.session.query(Pet.name, Pet.lat, Pet.lon).all()
-
-    hover_text = [result[0] for result in results]
-    lat = [result[1] for result in results]
-    lon = [result[2] for result in results]
-
-    pet_data = [{
-        "type": "scattergeo",
-        "locationmode": "USA-states",
-        "lat": lat,
-        "lon": lon,
-        "text": hover_text,
-        "hoverinfo": "text",
-        "marker": {
-            "size": 50,
-            "line": {
-                "color": "rgb(8,8,8)",
-                "width": 1
-            },
+    listBooks = []
+    for book in books:
+        dict_book = {
+            "id:" : book.id_book,
+            "Title" : book.title,
+            "image_url": book.image_url   
         }
-    }] """
+        listBooks.append(dict_book)
 
-    return jsonify(pet_data)
+    return jsonify(listBooks)
+
+@app.route("/api/findSharedBook/<id>")
+def findSharedBook(id):
+    books = db.session.query(Book.id_book, Book.title, Book.description, Book.isbn,
+                            Book.author, Book.language, Book.image_url, Book.publisher,
+                            Book.published_date).filter(Book.id_book == id).first()
+
+    owners = db.session.query(Owner.owner_email, Owner.rating, Owner.review, Owner.location,
+                            Owner.lat, Owner.lon, Owner.contact_details, 
+                            Owner.available).filter(Owner.id_book == id).all()
+
+    listOwners = []
+    for owner in owners:
+        dict_owner = {
+            "email:" : owner.owner_email,
+            "rating" : owner.rating,
+            "review": owner.review,
+            "location": owner.location,
+            "lat" : owner.lat,
+            "lon" : owner.lon,
+            "contact_details": owner.contact_details,
+            "available": owner.available   
+        }
+        listOwners.append(dict_owner)
+
+
+    book_data = [{
+        "Id": books[0],
+        "Title": books[1],
+        "Description": books[2],
+        "ISBN": books[3],
+        "Authors": books[4],
+        "Language": books[5],
+        "Image_URL" : books[6],
+        "Publisher" : books[7],
+        "Publication_Date": books[8],
+        "Owners": listOwners
+    }]
+
+    return jsonify(book_data)
 
 
 if __name__ == "__main__":
