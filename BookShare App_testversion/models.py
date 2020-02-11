@@ -27,6 +27,8 @@ class Owner(db.Model):
     rating = db.Column(db.Integer)
     review = db.Column(db.String(1000))
     location = db.Column(db.String(150))
+    lat= db.Column(db.Float(10))
+    lng= db.Column(db.Float(10))
 
     def __repr__(self):
         return '<Owner %r>' % (self.owner_email)

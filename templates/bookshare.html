@@ -1,11 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Owner Details</title>
+    <title>Book Share</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
                 integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -44,33 +44,15 @@
                 <h1>Share Books!</h1>
                 <p>Books are Better when shared!</p>
             </div>
-            
-            <!--Owner details form-->
             <div class="row">
                 <div class="col-md-offset-2 col-md-8">
                     <div class="row">
-                        <h3>Owner Details</h3>
+                        <h3>Share a book</h3>
                     </div>
-                    <form method="POST" action="/send" role="form", name="bookInfo">
+                    <form method="POST" action="/getBook_owner" role="form" name="bookInfo">
                         <div class="form-group">
                             <label for="inputTitle">Book Title</label>
                             <input type="text" class="form-control" id="inputTitle" name="title" placeholder="Title">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputEmail">Email</label>
-                            <input type="text" class="form-control" id="inputEmail" name="email" placeholder="E-mail">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputRating">Rating</label>
-                            <input type="text" class="form-control" id="inputRating" name="rating" placeholder="*Stars">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputReview">Review</label>
-                            <input type="text" class="form-control" id="inputReview" name="review" placeholder="Review">
-                        </div>
-                        <div class="form-group">
-                            <label for="inputLocation">Location</label>
-                            <input type="text" class="form-control" id="inputLocation" name="location" placeholder="Street,city, country, ZipCode">
                         </div>
                         <button type="button" class="btn btn-light">
                             <input type="submit" value="Submit" class="btn btn-default">
@@ -79,8 +61,10 @@
                 </div>
             </div>
 
+ 
         </div>
 
     </body>
 
 </html>
+ 

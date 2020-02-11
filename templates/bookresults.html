@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -19,34 +19,34 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
                 integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
                 crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!--link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"-->
 
     <body>
         <style>
             body {
-              background-image: url('assets/Images/Share-a-Book-1.png');
+              background-image: url("Images/Share-a-Book-1.png");
               background-repeat: no-repeat;
               background-attachment: fixed;
               background-size:cover;
             }
             </style>
-         <!-----Navigation Bar -->
+         <!-- Navigation Bar -->
          <nav class="navbar navbar-expand-lg navbar-light " style="padding:0px;">
             <div class="container-fluid">
-        
+
                 <a class="navbar-brand" href="/" style="font-size:xx-large; margin-left: 80px;"><strong>BookLook</strong></a>
              </div> <!--container fluid-->
         </nav>
 
         <div class="container">
-            <div class="jumbotron" style="text-align: center">
-               
+            <div class="jumbotron" style="text-align:center">
+
                 <h1>Find Books</h1>
                 <p>Find your Next Read!</p>
             </div>
             <div class="row">
                 <div class="col-md-offset-2 col-md-8">
-                    <form method="POST" action="/getBook" role="form", name="bookInfo">
+                    <form method="POST" action="/getBook" role="form" name="bookInfo">
                         <div class="form-group">
                             <label for="inputTitle">Book Title</label>
                             <input type="text" class="form-control" id="inputTitle" name="title" placeholder="Name">
@@ -57,9 +57,40 @@
                     </form>
                 </div>
             </div>
-            
+            <div class="row">
+                <div class="col-md-12" id="bookResults">
+                   <div class="col-md-12">
+                    <div id="table-area" class="">
+                      <table id="get-books" class="table table-striped">
+                        <style>
+                          table td{word-wrap:break-word; width: 200px;}
+                        </style>
+<!--                         <thead>
+                          <tr>
+                            <th class="table-head">Book_Image</th>
+                            <th class="table-head">Book_ID</th>
+                            <th class="table-head">Book_Title</th>
+                            <th class="table-head">Category/genre</th>
+                            <th class="table-head">Authors</th>
+                            <th class="table-head">Description</th>
+                            <th class="table-head">ISBN</th>
+                            <th class="table-head">Language</th>
+                            <th class="table-head">Published_Date</th>
+                            <th class="table-head">Publisher</th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody> -->
+                      </table>
+                      <!--if no matching results then display a message-->
+                      <div id="no-matching-flag"></div>
+                    </div>
+                  </div>
+                </div>
+            </div>
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
     </body>
 
 </html>
