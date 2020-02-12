@@ -13,17 +13,21 @@ function generateTable(table, data) {
 
 data.forEach((element)=> {
     var row = table.insertRow();
-    Object.entries(element).forEach(([key,value])=> {
+    Object.entries(element).forEach(([key,value])=> { 
     
+        console.log(`element print ${key}----${value}`)    
+
     var cell = row.insertCell();
+
     if (key=='title'){
     cell.innerHTML= value.link('/send')
     }
-    if (key=='image_url'){
+    else if (key=='image_url'){
         var img= document.createElement('img');
-        img.src='value';
+        img.src= value;
         cell.appendChild(img); 
             }
+ 
     else {
         cell.innerHTML= value
     }
@@ -31,6 +35,9 @@ data.forEach((element)=> {
 })
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////       uSer book search results table display
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //create bookresults table--- display results when user is searching for the books
 var url = "/api/findbook";
@@ -40,26 +47,34 @@ d3.json(url).then(function(response) {
     
     var table = document.getElementById("get-books");
     var data = Object.keys(response[0]);
-    generateTableHead(table, data);
-    generateTable(table, response);
     
+    generateTableHead(table, data);         //call fucntion to add table header
+    generateTable(table, response);         //call function to generate table
    
 });
 
-//create bookresults table--- display results when owner is searching for the books and adding details
+//select book results to redirect to display owner details and Locations
 
-var url = "/api/findbook_owner";
-d3.json(url).then(function(response) {
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////       Owner book search results table display
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//create bookresults table--- display results when owner is searching for the books and adding details
+/* var url2 = "/api/findbook_owner";
+d3.json(url2).then(function(response) {
 
     console.log(response);
     
     var table = document.getElementById("get-books");
     var data = Object.keys(response[0]);
-    generateTableHead(table, data);
-    generateTable(table, response);
+
+    generateTableHead(table, data);     //call function to generate table
+    generateTable(table, response);     //call fucntion to add table header
     
    
 });
+ */
+//select book results to redirect to enter owner details
+
 
  /*  var mountains = [
     { name: "Monte Falco", height: 1658, place: "Parco Foreste Casentinesi" },
