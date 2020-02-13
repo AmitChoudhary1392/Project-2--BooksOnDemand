@@ -206,6 +206,8 @@ def send():
         rating = request.form["rating"]
         review= request.form["review"]
         location= request.form["location"]
+        contact_details= request.form["contact_details"]
+        available= request.form["available"]
 
         from config import api_key
         params={'address':location,
@@ -216,7 +218,7 @@ def send():
 
         # getting lat/lng for the given address
         lat =response['results'][0]['geometry']['location']['lat']
-        lng =response['results'][0]['geometry']['location']['lng']
+        lon =response['results'][0]['geometry']['location']['lng']
 
 
 ###*** need to modify the owner table fields in database

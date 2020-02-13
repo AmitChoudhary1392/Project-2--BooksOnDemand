@@ -29,7 +29,7 @@ data.forEach((element)=> {
             }
  
     else if (key=='id'){
-        cell.innerHTML= value.link('/booksearch')
+        cell.innerHTML= value
     }
     })
 })
@@ -58,20 +58,41 @@ d3.json(url).then(function(response) {
         url3= `/api/findSharedBook/${id}`
         d3.json(url3).then(function(datasheet){
             
+            console.log(datasheet);
             var table = document.getElementById("get-books");
-            var data = Object.keys(datasheet[0]);
-            generateTableHead(table, data);         //call fucntion to add table header
-            generateTable(table, datasheet);
-        })
-    })
-
+            table.innerHTML=''
+             
+            datasheet.forEach((element)=> {
+                var row = table.insertRow();
+                Object.entries(element).forEach(([key,value])=> { 
+                
+                    // console.log(`element print ${key}----${value}`)    
+                if (key=='Owners'){
+                    var owner = Object.keys(value[0]);
+                    generateTableHead(table, owner);         //call fucntion to add table header
+                    
+                    value.forEach((element)=> {
+                        var row = table.insertRow();
+                        Object.entries(element).forEach(([key,value])=> { 
+                            var cell = row.insertCell();
+                            cell.innerHTML=value;
+                        })
+                    })                    
+                }
+                
+            });
+        });
+    });
+    
+});
+});
     /* onClick{
         var title= this.value
         
 
 
     } */
-});
+
 
   
 
@@ -96,13 +117,3 @@ d3.json(url).then(function(response) {
 // });
 
 //select book results to redirect to enter owner details
-
-
- /*  var mountains = [
-    { name: "Monte Falco", height: 1658, place: "Parco Foreste Casentinesi" },
-    { name: "Monte Falterona", height: 1654, place: "Parco Foreste Casentinesi" },
-    { name: "Poggio Scali", height: 1520, place: "Parco Foreste Casentinesi" },
-    { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-    { name: "Monte Amiata", height: 1738, place: "Siena" }
-  ];
-   */
