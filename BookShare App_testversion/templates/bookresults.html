@@ -19,13 +19,12 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
                 integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
                 crossorigin="anonymous"></script>
-    
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
     <body>
         <style>
             body {
-              background-image: url("/static/img/Share-a-Book-1.png");
+              background-image: url("../static/img/Share-a-Book-1.png");
               background-repeat: no-repeat;
               background-attachment: fixed;
               background-size:cover;
@@ -66,6 +65,21 @@
                         <style>
                           table td{word-wrap:break-word; width: 200px;}
                         </style>
+<!--                         <thead>
+                          <tr>
+                            <th class="table-head">Book_Image</th>
+                            <th class="table-head">Book_ID</th>
+                            <th class="table-head">Book_Title</th>
+                            <th class="table-head">Category/genre</th>
+                            <th class="table-head">Authors</th>
+                            <th class="table-head">Description</th>
+                            <th class="table-head">ISBN</th>
+                            <th class="table-head">Language</th>
+                            <th class="table-head">Published_Date</th>
+                            <th class="table-head">Publisher</th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody> -->
                       </table>
                       <!--if no matching results then display a message-->
                       <div id="no-matching-flag"></div>

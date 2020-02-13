@@ -24,8 +24,11 @@ db = SQLAlchemy(app)
 
 from models import *
 
+# global variables used in the code
 bookTitle=""
 books=[]
+books_owner=[]
+
 # create route that renders index.html template
 @app.route("/")
 def home():
@@ -43,53 +46,26 @@ def getBook():
     if request.method == "POST":
         
         bookTitle = request.form["title"]
+        #print(bookTitle)
+        
+        books_db = db.session.query(Book.id_book, Book.title, Book.image_url).filter(Book.title.like(f'%{bookTitle}%')).all()
 
-    from config import api_key
-
-    params={'maxResults':5}
-
-    url= f'https://www.googleapis.com/books/v1/volumes?q={bookTitle}&key={api_key}'
-    response = requests.get(url, params).json()
-    global books
-    books=[]
-    results=response['items']
-    for item in results:
-        try:
-            book={'id_book': item['id'],
-              'title':item['volumeInfo']['title'] if 'title' in item['volumeInfo'].keys() else " ",
-              'description': item['volumeInfo']['description'] if 'description' in item['volumeInfo'].keys() else " ",
-              'isbn':item['volumeInfo']['industryIdentifiers'][0]['identifier'] if 'industryIdentifiers' in item['volumeInfo'].keys() else " ",
-              'author':item['volumeInfo']['authors'] if 'authors' in item['volumeInfo'].keys() else " ",
-              'language':item['volumeInfo']['language'] if 'language' in item['volumeInfo'].keys() else " ",
-              'image_url':item['volumeInfo']['imageLinks']['smallThumbnail'] if 'imageLinks' in item['volumeInfo'].keys() else " ",
-              'publisher': item['volumeInfo']['publisher'] if 'publisher' in item['volumeInfo'].keys() else " ",        
-              'published_date':item['volumeInfo']['publishedDate'] if 'published_date' in item['volumeInfo'].keys() else " "
+        #print (books_db)
+        global books
+        books=[]
+        for book in books_db:
+            dict_book = {
+                "id" : book.id_book,
+                "Title" : book.title,
+                "image_url": book.image_url   
             }
-            
-        except:
-            book = {'id_book': 'not found'}
-    
-        books.append(book)
-        #bookrecord = Book(id_book= book['id_book'], title=book['title'], description= book['description'], isbn= book['isbn'], author=book['authors'], language=book['language'],
-                        #image_url=book['image_url'], publisher=book['publisher'], published_date=book['published_date'])
-    
-    #####need a conditional to check the book already in database, no duplicates??????
-        #db.session.add(bookrecord)
-        #db.session.commit()
+            books.append(dict_book)
+
             
     return render_template("bookresults.html")
     
  
-
-# Query the database and send the jsonified results
-""" @app.route("/showBooks")
-def showBooks():
-   
-    global bookTitle
-    #data= requests.get(f"/api/findbook/{bookTitle}")
-    return redirect(f"/api/findbook/{bookTitle}")
- """
-
+#route for JAVASCRIPT connection to display results table for user
 @app.route("/api/findbook")
 def findbook():
 
@@ -97,28 +73,13 @@ def findbook():
     data= jsonify(books)
     return data
     
-    """ results = db.session.query(Book.image_url, Book.id_book, Book.title, Book.author, Book.description,Book.isbn, Book.language, Book.published_date,
-                                Book.publisher).all()
-    return jsonify(results) """
-    """ for image_url, id_book, title, author, description,isbn, language,published_date,publisher in results:
-        book={}
-        book['image_url']=image_url
-        book['id_book']=id_book
-        book['title']=title
-        book['authors']=author
-        book['description']= description
-        book['isbn']= isbn
-        book['language']=language
-        book['published_date']=published_date
-        book['publisher']=publisher  
-        books.append(book)
-    return jsonify(books) """
+
 #######################################################################################
 
 
-#################################################
-# bookshare page and Owner Details
-#################################################
+#################################################################################################################
+# ###################         bookshare page and Owner Details    #################################################
+###################################################################################################################
 
 #navigation route
 @app.route("/bookShare", methods=["GET", "POST"])
@@ -126,58 +87,76 @@ def Shareform():
     
     return render_template("bookshare.html")
 
-# Query the database and send the jsonified results
-@app.route("/send", methods=["GET", "POST"])
-def send():
+#get search results for selection by owner
+@app.route("/getBook_owner", methods=["GET", "POST"])
+def getBook_owner():
     if request.method == "POST":
-        title = request.form["title"]
-        owner_email = request.form["email"]
-        rating = request.form["rating"]
-        review= request.form["review"]
-        location= request.form["location"]
+        
+        bookTitle = request.form["title"]
 
-        from config import api_key
-        params={'address':location,
-                "key":api_key}
+    #Googlebooks API connection
+    from config import api_key
 
-        url= 'https://maps.googleapis.com/maps/api/geocode/json?'
-        response=requests.get(url, params).json()
+    params={'maxResults':2}
 
-        # getting lat/lng for the given address
-        lat =response['results'][0]['geometry']['location']['lat']
-        lng =response['results'][0]['geometry']['location']['lng']
+    url= f'https://www.googleapis.com/books/v1/volumes?q={bookTitle}&key={api_key}'
+    response = requests.get(url, params).json()
 
+    global books_owner
+    books_owner=[]
+    
+    #Extracting required information from Google books API
+    results=response['items']
+    for item in results:
+        try:
+            book={
+                'image_url':item['volumeInfo']['imageLinks']['smallThumbnail'] if 'imageLinks' in item['volumeInfo'].keys() else " ",
+                'id_book': item['id'],
+                'title':item['volumeInfo']['title'] if 'title' in item['volumeInfo'].keys() else " ",
+                'category/genre':item['volumeInfo']['categories'] if 'categories' in item['volumeInfo'].keys() else " ",
+                'authors':item['volumeInfo']['authors'] if 'authors' in item['volumeInfo'].keys() else " ",
+                'description': item['volumeInfo']['description'] if 'description' in item['volumeInfo'].keys() else " ",
+                'isbn':item['volumeInfo']['industryIdentifiers'][0]['identifier'] if 'industryIdentifiers' in item['volumeInfo'].keys() else " ",
+                'language':item['volumeInfo']['language'] if 'language' in item['volumeInfo'].keys() else " ",
+                'published_date':item['volumeInfo']['publishedDate'] if 'published_date' in item['volumeInfo'].keys() else " ",
+                'publisher': item['volumeInfo']['publisher'] if 'publisher' in item['volumeInfo'].keys() else " "     
+            }
+            
+        except:
+            book = {'id_book': 'not found'}
+    
+        books_owner.append(book)
 
-###*** need to modify the owner table fields in database
-        #owner = Owner(title=title, owner_email=owner_email, rating=rating, review=review, location=location)
-        #db.session.add(owner)
-        #db.session.commit()
-    return redirect("/", code=302)
-    print("*********************************")
-    #return render_template("form.html")
+            
+    return render_template("shareresults.html")
 
+@app.route("/api/findbook_owner")
+def findbook_owner():
 
-#################################################
-# bookshare return data from Database
-#################################################
+    global books_owner
+    dict_books=[]
+    
+    for book in books_owner:
+            dict_book = {
+                "id" : book['id_book'],
+                "Title" : book['title'],
+                "image_url": book['image_url']   
+            }
+            dict_books.append(dict_book)
+    
+    data= jsonify(dict_books)
+    return data
 
-@app.route("/api/listSharedBooks")
-def listSharedBooks():
-    books = db.session.query(Book.id_book, Book.title, Book.image_url).all()
+#navigation route
+@app.route("/OwnerDetails")
+def OwnerDetails():
 
-    listBooks = []
-    for book in books:
-        dict_book = {
-            "id:" : book.id_book,
-            "Title" : book.title,
-            "image_url": book.image_url   
-        }
-        listBooks.append(dict_book)
+    return render_template('OwnerDetails.html')
 
-    return jsonify(listBooks)
-
+#complete book details
 @app.route("/api/findSharedBook/<id>")
 def findSharedBook(id):
+    
     books = db.session.query(Book.id_book, Book.title, Book.description, Book.isbn,
                             Book.author, Book.language, Book.image_url, Book.publisher,
                             Book.published_date).filter(Book.id_book == id).first()
@@ -213,8 +192,70 @@ def findSharedBook(id):
         "Publication_Date": books[8],
         "Owners": listOwners
     }]
+    print (book_data)
 
     return jsonify(book_data)
+
+# Query the database and send the jsonified results
+@app.route("/send", methods=["GET", "POST"])
+def send():
+    
+    if request.method == "POST":
+        title = request.form["title"]
+        owner_email = request.form["email"]
+        rating = request.form["rating"]
+        review= request.form["review"]
+        location= request.form["location"]
+
+        from config import api_key
+        params={'address':location,
+                "key":api_key}
+
+        url= 'https://maps.googleapis.com/maps/api/geocode/json?'
+        response=requests.get(url, params).json()
+
+        # getting lat/lng for the given address
+        lat =response['results'][0]['geometry']['location']['lat']
+        lng =response['results'][0]['geometry']['location']['lng']
+
+
+###*** need to modify the owner table fields in database
+        #owner = Owner(title=title, owner_email=owner_email, rating=rating, review=review, location=location)
+        #db.session.add(owner)
+        #db.session.commit()
+    return redirect("/", code=302)
+    print("*********************************")
+    #return render_template("form.html")
+
+    
+@app.route("/api/ownerdetails/<location>")
+def owner(location):
+
+    
+
+    """ results = db.session.query(Pet.name, Pet.lat, Pet.lon).all()
+
+    hover_text = [result[0] for result in results]
+    lat = [result[1] for result in results]
+    lon = [result[2] for result in results]
+
+    pet_data = [{
+        "type": "scattergeo",
+        "locationmode": "USA-states",
+        "lat": lat,
+        "lon": lon,
+        "text": hover_text,
+        "hoverinfo": "text",
+        "marker": {
+            "size": 50,
+            "line": {
+                "color": "rgb(8,8,8)",
+                "width": 1
+            },
+        }
+    }] """
+
+    return jsonify(pet_data)
 
 
 if __name__ == "__main__":

@@ -15,12 +15,12 @@ data.forEach((element)=> {
     var row = table.insertRow();
     Object.entries(element).forEach(([key,value])=> { 
     
-        console.log(`element print ${key}----${value}`)    
+        // console.log(`element print ${key}----${value}`)    
 
     var cell = row.insertCell();
 
-    if (key=='title'){
-    cell.innerHTML= value.link('/send')
+    if (key=='Title'){
+    cell.innerHTML= value
     }
     else if (key=='image_url'){
         var img= document.createElement('img');
@@ -28,8 +28,8 @@ data.forEach((element)=> {
         cell.appendChild(img); 
             }
  
-    else {
-        cell.innerHTML= value
+    else if (key=='id'){
+        cell.innerHTML= value.link('/booksearch')
     }
     })
 })
@@ -51,7 +51,29 @@ d3.json(url).then(function(response) {
     generateTableHead(table, data);         //call fucntion to add table header
     generateTable(table, response);         //call function to generate table
    
+    var id_table=d3.select('#get-books')
+    id_table.selectAll('td').on('click', function(){
+        var id= d3.select(this).text()
+        console.log(this)
+        url3= `/api/findSharedBook/${id}`
+        d3.json(url3).then(function(datasheet){
+            
+            var table = document.getElementById("get-books");
+            var data = Object.keys(datasheet[0]);
+            generateTableHead(table, data);         //call fucntion to add table header
+            generateTable(table, datasheet);
+        })
+    })
+
+    /* onClick{
+        var title= this.value
+        
+
+
+    } */
 });
+
+  
 
 //select book results to redirect to display owner details and Locations
 
@@ -59,20 +81,20 @@ d3.json(url).then(function(response) {
 /////       Owner book search results table display
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //create bookresults table--- display results when owner is searching for the books and adding details
-/* var url2 = "/api/findbook_owner";
-d3.json(url2).then(function(response) {
+// var url2 = "/api/findbook_owner";
+// d3.json(url2).then(function(response) {
 
-    console.log(response);
+//     console.log(response);
     
-    var table = document.getElementById("get-books");
-    var data = Object.keys(response[0]);
+//     var table = document.getElementById("get-books");
+//     var data = Object.keys(response[0]);
 
-    generateTableHead(table, data);     //call function to generate table
-    generateTable(table, response);     //call fucntion to add table header
+//     generateTableHead(table, data);     //call function to generate table
+//     generateTable(table, response);     //call fucntion to add table header
     
    
-});
- */
+// });
+
 //select book results to redirect to enter owner details
 
 

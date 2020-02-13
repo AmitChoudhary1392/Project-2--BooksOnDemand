@@ -19,13 +19,12 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
                 integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
                 crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="/static/css/style.css">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
     <body>
         <style>
             body {
-              background-image: url('/static/img/Share-a-Book-1.png');
+              background-image: url('../static/img/Share-a-Book-1.png');
               background-repeat: no-repeat;
               background-attachment: fixed;
               background-size:cover;
@@ -50,7 +49,7 @@
                     <div class="row">
                         <h3>Share a book</h3>
                     </div>
-                    <form method="POST" action="/send" role="form" name="bookInfo">
+                    <form method="POST" action="/getBook_owner" role="form" name="bookInfo">
                         <div class="form-group">
                             <label for="inputTitle">Book Title</label>
                             <input type="text" class="form-control" id="inputTitle" name="title" placeholder="Title">
@@ -60,17 +59,16 @@
                         </button>
                     </form>
                 </div>
-            </div>
+            </div> 
 
             <!--List down the search results-->
                          
             <div class="row">
                 <div class="col-md-12" id="bookResults"> 
-                   <ul>{{data}}</ul>
                    <div class="col-md-12">
                     <div id="table-area" class="">
                       <table id="get-books" class="table table-striped">
-                        <thead>
+                        <!-- <thead>
                           <tr>
                             <th class="table-head">Book_Image</th>
                             <th class="table-head">Book_ID</th>
@@ -83,7 +81,7 @@
                             <th class="table-head">Publisher</th>
                           </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody></tbody> -->
                       </table>
                       <!--if no matching results then display a message-->
                       <div id="no-matching-flag"></div>
@@ -93,7 +91,7 @@
             </div>
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
-        <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/app_owner.js') }}"></script>
 
     </body>
 

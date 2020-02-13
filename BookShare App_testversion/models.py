@@ -10,7 +10,7 @@ class Book(db.Model):
     isbn = db.Column(db.String(13))
     image_url = db.Column(db.String(1000))
     author = db.Column(db.String(500))
-    published_date = db.Column(db.String(10))
+    published_date = db.Column(db.Date)
     publisher = db.Column(db.String(100))
     language = db.Column(db.String(2))
 
@@ -27,7 +27,7 @@ class Owner(db.Model):
     review = db.Column(db.String(1000))
     location = db.Column(db.String(150))
     lat= db.Column(db.Float(10))
-    lng= db.Column(db.Float(10))
+    lon= db.Column(db.Float(10))
     contact_details = db.Column(db.String(1000))
     available = db.Column(db.Integer)
 
