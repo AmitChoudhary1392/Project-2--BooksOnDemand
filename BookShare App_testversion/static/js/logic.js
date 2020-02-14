@@ -1,3 +1,5 @@
+d3.select('table').html('')
+
 var myMap= L.map('map',{
     center:[43.6532, -79.3832], zoom:13
 
@@ -8,6 +10,7 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
   maxZoom: 18,
   id: "mapbox.streets",
   accessToken: API_KEY}).addTo(myMap);
+
 
   
 
