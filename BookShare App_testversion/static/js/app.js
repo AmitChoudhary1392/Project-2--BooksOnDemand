@@ -76,6 +76,8 @@ d3.json(url).then(function(response) {
                         Object.entries(element).forEach(([key,value])=> { 
                             var cell = row.insertCell();
                             cell.innerHTML=value;
+
+                            
                         })
                     })                    
                 }
@@ -86,6 +88,8 @@ d3.json(url).then(function(response) {
     
 });
 });
+
+
     /* onClick{
         var title= this.value
         
