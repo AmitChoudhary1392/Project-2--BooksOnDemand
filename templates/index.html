@@ -17,13 +17,16 @@
                 integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
                 crossorigin="anonymous"></script>
         <link rel="stylesheet" href="../static/css/style.css">
+        <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
+    integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
+    crossorigin=""></script>
 
     </head>
 
     <body>
         <style>
             body {
-              background-image: url('../assets/Images/Share-a-Book-1.png');
+              background-image: url('../static/img/Share-a-Book-1.png');
               background-repeat: no-repeat;
               background-attachment: fixed;
               background-size:cover;
@@ -42,7 +45,7 @@
             <div class="main-padding"  style="padding-top: 30px; padding-left:30px;">
                 
                 <h2 class="header" >
-                    <img src="../assets/Images/bookworm.jpeg"class="img-fluid img" >
+                    <img src="../static/img/bookworm.jpeg"class="img-fluid img" >
                     <a href="/bookSearch">Find Books</a></h2>  
                  
             </div>
@@ -53,12 +56,15 @@
             <div class="main-padding"  style="padding-top: 30px; padding-left:80px; ">
                 
                 <h2 class="header" >
-                    <img src="../assets/Images/Books_shared.png"class="img-fluid img" >
+                    <img src="../static/img/Books_shared.png"class="img-fluid img" >
                     <a href="/bookShare">Share Books</a></h2>  
                  
             </div>
         </div>    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>          
+        <div id="map"></div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>    
+        
+
                                 
     </body>
 

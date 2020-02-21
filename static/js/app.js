@@ -13,18 +13,22 @@ function generateTable(table, data) {
 
 data.forEach((element)=> {
     var row = table.insertRow();
-    Object.entries(element).forEach(([key,value])=> {
+    Object.entries(element).forEach(([key,value])=> { 
     
+        // console.log(`element print ${key}----${value}`)    
+
     var cell = row.insertCell();
-    if (key=='title'){
-    cell.innerHTML= value.link('/send')
+
+    if (key=='Title'){
+    cell.innerHTML= value
     }
-    if (key=='image_url'){
+    else if (key=='image_url'){
         var img= document.createElement('img');
-        img.src='value';
+        img.src= value;
         cell.appendChild(img); 
             }
-    else {
+ 
+    else if (key=='id'){
         cell.innerHTML= value
     }
     })
@@ -44,10 +48,57 @@ d3.json(url).then(function(response) {
     var table = document.getElementById("get-books");
     var data = Object.keys(response[0]);
     
-    generateTable(table, response);         //call function to generate table
     generateTableHead(table, data);         //call fucntion to add table header
+    generateTable(table, response);         //call function to generate table
    
+    var id_table=d3.select('#get-books')
+    id_table.selectAll('td').on('click', function(){
+        var id= d3.select(this).text()
+        console.log(this)
+        url3= `/api/findSharedBook/${id}`
+        d3.json(url3).then(function(datasheet){
+            
+            console.log(datasheet);
+            var table = document.getElementById("get-books");
+            table.innerHTML=''
+             
+            datasheet.forEach((element)=> {
+                var row = table.insertRow();
+                Object.entries(element).forEach(([key,value])=> { 
+                
+                    // console.log(`element print ${key}----${value}`)    
+                if (key=='Owners'){
+                    var owner = Object.keys(value[0]);
+                    generateTableHead(table, owner);         //call fucntion to add table header
+                    
+                    value.forEach((element)=> {
+                        var row = table.insertRow();
+                        Object.entries(element).forEach(([key,value])=> { 
+                            var cell = row.insertCell();
+                            cell.innerHTML=value;
+
+                            
+                        })
+                    })                    
+                }
+                
+            });
+        });
+    });
+    
 });
+});
+
+
+    /* onClick{
+        var title= this.value
+        
+
+
+    } */
+
+
+  
 
 //select book results to redirect to display owner details and Locations
 
@@ -55,28 +106,18 @@ d3.json(url).then(function(response) {
 /////       Owner book search results table display
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //create bookresults table--- display results when owner is searching for the books and adding details
-var url2 = "/api/findbook_owner";
-d3.json(url).then(function(response) {
+// var url2 = "/api/findbook_owner";
+// d3.json(url2).then(function(response) {
 
-    console.log(response);
+//     console.log(response);
     
-    var table = document.getElementById("get-books");
-    var data = Object.keys(response[0]);
+//     var table = document.getElementById("get-books");
+//     var data = Object.keys(response[0]);
 
-    generateTableHead(table, data);     //call function to generate table
-    generateTable(table, response);     //call fucntion to add table header
+//     generateTableHead(table, data);     //call function to generate table
+//     generateTable(table, response);     //call fucntion to add table header
     
    
-});
+// });
 
 //select book results to redirect to enter owner details
-
-
- /*  var mountains = [
-    { name: "Monte Falco", height: 1658, place: "Parco Foreste Casentinesi" },
-    { name: "Monte Falterona", height: 1654, place: "Parco Foreste Casentinesi" },
-    { name: "Poggio Scali", height: 1520, place: "Parco Foreste Casentinesi" },
-    { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-    { name: "Monte Amiata", height: 1738, place: "Siena" }
-  ];
-   */

@@ -22,13 +22,14 @@ class Owner(db.Model):
     __tablename__ = 'Owner'
 
     id_book = db.Column(db.String(20), primary_key=True) 
-    title = db.Column(db.String(300))
     owner_email = db.Column(db.String(60), primary_key=True)
     rating = db.Column(db.Integer)
     review = db.Column(db.String(1000))
     location = db.Column(db.String(150))
     lat= db.Column(db.Float(10))
-    lng= db.Column(db.Float(10))
+    lon= db.Column(db.Float(10))
+    contact_details = db.Column(db.String(1000))
+    available = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Owner %r>' % (self.owner_email)
